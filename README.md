@@ -16,7 +16,7 @@ i. MySQL - https://www.mysql.com/downloads/
 
 ii. MariaDB - https://mariadb.org/download/ . GIT - https://git-scm.com/ - Versionador de código.
 
-. DevExtreme https://js.devexpress.com/Documentation/ - Componentes JS (Utilizar a versão em jQuery . Para auxiliar no desenvolvimento, poderá ser utilizada quaisquer outras ferramentas que agreguem no projeto, tornando-o mais produtivo e ágil.
+- DevExtreme https://js.devexpress.com/Documentation/ - Componentes JS (Utilizar a versão em jQuery - Para auxiliar no desenvolvimento, poderá ser utilizada quaisquer outras ferramentas que agreguem no projeto, tornando-o mais produtivo e ágil.
 
 # 3. DIFERENCIAIS QUE SERÃO CONSIDERADOS
 - Recomendações de infra para execução do projeto.
@@ -27,13 +27,13 @@ ii. MariaDB - https://mariadb.org/download/ . GIT - https://git-scm.com/ - Versi
 
 # 4. ATIVIDADE A SER DESENVOLVIDA
 Criar um sistema que atenda as necessidades abaixo:
-. Sistema com autenticação de usuário e senha; . Criar menu de usuários com as funcionalidades abaixo
+- Sistema com autenticação de usuário e senha; - Criar menu de usuários com as funcionalidades abaixo
 i. listar os usuários;
 ii. cadastrar novos usuários;
 iii. editar os usuários;
 iv. excluir os usuários;
 v. Opção de vincular o usuário à uma ou mais empresas;
-. Criar menu de empresas com as funcionalidades abaixo i. listar as empresas;
+- Criar menu de empresas com as funcionalidades abaixo i. listar as empresas;
 ii. cadastrar novas empresas;
 iii. Deverá ser possível editar as empresas;
 iv. Deverá ser possível excluir as empresas;
