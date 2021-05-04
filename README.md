@@ -4,10 +4,10 @@ Projeto da Next
 # Desafio Técnico Desenvolvedor(a) PHP Full Stack
 
 # 1. REGRAS
-. O prazo máximo de entrega é dia 11/04/2021 até as 23:59:59.
-. O teste deve ser desenvolvido utilizando as linguagens PHP, Javascript, SQL e HTML.
-. A forma de entrega deverá ser em seu repositório do Git (GitLab ou GitHub) retornar o e-mail com o link do projeto.
-. Caso seja identificado plágio o participante será desclassificado.
+##. O prazo máximo de entrega é dia 11/04/2021 até as 23:59:59.
+##. O teste deve ser desenvolvido utilizando as linguagens PHP, Javascript, SQL e HTML.
+##. A forma de entrega deverá ser em seu repositório do Git (GitLab ou GitHub) retornar o e-mail com o link do projeto.
+##. Caso seja identificado plágio o participante será desclassificado.
 
 # 2. REQUISITOS TÉCNICOS PARA UTILIZAÇÃO DO PROJETO
 ○ PHP - https://www.php.net/ - Não utilizar frameworks, utilizar o php para criar um webservice, arquivos php não deve conter HTML e JavaScript ○ Banco de dados relacional - Escolha uma das opções abaixo:
