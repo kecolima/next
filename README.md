@@ -28,25 +28,20 @@ ii. MariaDB - https://mariadb.org/download/ . GIT - https://git-scm.com/ - Versi
 # 4. ATIVIDADE A SER DESENVOLVIDA
 Criar um sistema que atenda as necessidades abaixo:
 - Sistema com autenticação de usuário e senha; - Criar menu de usuários com as funcionalidades abaixo
-- 
+ 
 i. listar os usuários;
 
 ii. cadastrar novos usuários;
-
 iii. editar os usuários;
-
 iv. excluir os usuários;
 
 v. Opção de vincular o usuário à uma ou mais empresas;
 
 - Criar menu de empresas com as funcionalidades abaixo i. listar as empresas;
-- 
+
 ii. cadastrar novas empresas;
-
 iii. Deverá ser possível editar as empresas;
-
 iv. Deverá ser possível excluir as empresas;
-
 
 # 5. INFORMAÇÕES ADICIONAIS
 - Coloque em seu projeto um manual de como é realizada a instalação do seu software, como por exemplo: criação das tabelas e/ou arquivos de configurações (caso existam), enfim tudo que é necessário para rodarmos seu projeto.
