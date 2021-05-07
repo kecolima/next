@@ -113,12 +113,8 @@ class EmpresaController extends Controller
     public function update()
     {       
         $empresa = $this->getInput(); 
-        //dd($empresa);
         $id = Input::post('id');
-        //$empresa['id'] = $empresa_id;
-        //$empresa['id'] = 1;
-         
-        //dd($empresa);    
+
         /*
         if (!$this->validate($empresa, false)) {
             return  $this->showMessage(
@@ -165,8 +161,6 @@ class EmpresaController extends Controller
         $empresa = end($uri); 
 
         $result = $this->empresaModel->delete($empresa);
-
-        //dd($result);
        
         if ($result <= 0) {
             echo 'Erro ao deletar uma novo empresa';

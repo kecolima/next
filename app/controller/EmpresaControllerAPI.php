@@ -23,15 +23,46 @@ class EmpresaControllerAPI extends Controller
     }
 
     /**
+     * Método para validar o JWT
+     * 
+     * @return bool
+     */
+    public function validarJWT(string $jwt)
+    {        
+        $part = explode(".",$jwt);
+        $header = $part[0];
+        $payload = $part[1];
+        $signature = $part[2];
+
+        $valid = hash_hmac('sha256',"$header.$payload",'123',true);
+        $valid = base64_encode($valid);
+
+        if($signature == $valid){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    /**
      * Carrega a página principal
      *
      * @return void
      */
     public function index()
     {
-        $result = $this->empresaModel->getAll();
-        //return json_encode($result);
-        echo json_encode($result);
+        $body = file_get_contents('php://input');
+        $jsonBody = json_decode($body, true);
+        $parametros = $jsonBody;        
+        $jwt = $this->validarJWT($parametros['token']);
+
+        if ($jwt) {
+
+            $result = $this->empresaModel->getAll();
+            echo json_encode($result);
+        }   
+             
+        echo json_encode('erro');
     }
 
     /**
@@ -40,46 +71,68 @@ class EmpresaControllerAPI extends Controller
      * @return void
      */
     public function getById()
-    {           
+    {     
+        $body = file_get_contents('php://input');
+        $jsonBody = json_decode($body, true);
+        $parametros = $jsonBody;        
+        $jwt = $this->validarJWT($parametros['token']);   
+
+        if($jwt){      
+
         $uri = $_SERVER['REQUEST_URI'];        
         $uri = explode('/',$uri);
         $empresa = end($uri); 
         $result = $this->empresaModel->getById($empresa);
         echo json_encode($result);
+
+        }
+
+        echo json_encode('erro');
+        
     }
     
     public function insert()
     { 
         $body = file_get_contents('php://input');
         $jsonBody = json_decode($body, true);
-        $parametros = $jsonBody; 
+        $parametros = $jsonBody;        
+        $jwt = $this->validarJWT($parametros['token']);        
+        $user = $this->getInput($parametros);
 
-        $empresa = $this->getInput($parametros);
+        if($jwt){ 
+            $body = file_get_contents('php://input');
+            $jsonBody = json_decode($body, true);
+            $parametros = $jsonBody; 
 
-        $result = $this->empresaModel->insert($empresa);
+            $empresa = $this->getInput($parametros);
 
-        if ($result <= 0) {
-            echo 'Erro ao cadastrar um novo empresa';
-            die();
-        }
-       
-        if (!$this->validate($empresa, false)) {
-            return  $this->showMessage(
-                'Formulário inválido', 
-                'Os dados fornecidos são inválidos',
-                BASE  . 'novo-empresa/',
-                422
-            );
-        }
+            $result = $this->empresaModel->insert($empresa);
 
-        $result = $this->empresaModel->insert($empresa);
+            if ($result <= 0) {
+                echo 'Erro ao cadastrar um novo empresa';
+                die();
+            }
+        
+            if (!$this->validate($empresa, false)) {
+                return  $this->showMessage(
+                    'Formulário inválido', 
+                    'Os dados fornecidos são inválidos',
+                    BASE  . 'novo-empresa/',
+                    422
+                );
+            }
 
-        if ($result <= 0) {
-            echo 'Erro ao cadastrar um novo empresa';
-            die();
-        }
+            $result = $this->empresaModel->insert($empresa);
+
+            if ($result <= 0) {
+                echo 'Erro ao cadastrar um novo empresa';
+                die();
+            }
+        } else {
+            echo json_encode('erro');
+        }       
+        
     }
-
     
     /**
      * Realiza a busca na base de dados e exibe na página de resultados
@@ -90,16 +143,26 @@ class EmpresaControllerAPI extends Controller
     {
         $body = file_get_contents('php://input');
         $jsonBody = json_decode($body, true);
-        $parametros = $jsonBody; 
+        $parametros = $jsonBody;        
+        $jwt = $this->validarJWT($parametros['token']);   
 
-        $empresa = $this->getInput($parametros);
+        if($jwt){
+            $body = file_get_contents('php://input');
+            $jsonBody = json_decode($body, true);
+            $parametros = $jsonBody; 
 
-        $result = $this->empresaModel->update($empresa);
+            $empresa = $this->getInput($parametros);
 
-        if ($result <= 0) {
-            echo 'Erro ao cadastrar um novo empresa';
-            die();
-        }        
+            $result = $this->empresaModel->update($empresa);
+
+            if ($result <= 0) {
+                echo 'Erro ao cadastrar um novo empresa';
+                die();
+            }
+        }
+        
+        echo json_encode('erro');
+        
     }
 
     /**

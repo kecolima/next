@@ -96,7 +96,6 @@ class UserController extends Controller
     public function pesquisar()
     {
         $param = Input::post('pes');
-        dd($param);
         $this->load('user/novo', [
             'termo' => $param
         ]);

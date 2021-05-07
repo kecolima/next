@@ -2,7 +2,6 @@
 
 namespace app\core;
 
-
 class RouterCore
 {
     private $uri;
@@ -55,19 +54,15 @@ class RouterCore
     }
 
     private function execute()
-    { 
-        //dd($this->method);
+    {         
         switch ($this->method) {           
             case 'GET':
-                //dd('Aqui GET');
                 $this->executeGet();
                 break;
-            case 'POST':      
-                //dd('Aqui POST');          
+            case 'POST':          
                 $this->executePost();
                 break;
             case 'DELETE':
-                //dd('Aqui DELETE');
                 $this->executeDelete();
                 break;
         }
@@ -78,15 +73,12 @@ class RouterCore
         $uri_id = $this->uri; 
         $url = explode('/', $uri_id);
         $controller = $url[1];
-        //dd($url);
         if ($url[0] === 'api') {
             if ($url[1]) {                
-                array_shift($url);
-                //dd($url);           
+                array_shift($url);         
                 if($url[1]){                  
                     $cont = 'app\\controller\\'.$controller.'ControllerAPI';
                     $get['call'] = $controller.'ControllerAPI@getById';
-                    //$method = 'getById';
                     $this->executeControllerAPI($get['call'], false);
                     /*
                     try {
@@ -118,13 +110,11 @@ class RouterCore
         } else {
             $uri = $this->uri;
             $uri = explode('/',$uri);
-            //dd($uri);
             foreach ($this->getArr as $get) {                
                 $r = substr($get['router'], 1);
                 if (substr($r, -1) == '/') {
                     $r = substr($r, 0, -1);
                 }
-                //dd($uri[0]);
                 if ($r == $uri[0]) {
                     if($uri[0] == 'pesquisa'){
                         if (is_callable($get['call'])) {
@@ -148,17 +138,14 @@ class RouterCore
 
     private function executePost()
     {
-        //dd('aqui');
         $uri_id = $this->uri; 
         $url = explode('/', $uri_id);
-        //dd($url);
         if ($url[0] === 'api') {
 
             $controller = explode('-',$url[1]);
             $body = file_get_contents('php://input');
             $jsonBody = json_decode($body, true);
             $parametros = $jsonBody; 
-            //dd($controller);
             if ($controller[0] === 'editar') {
                 
                     $cont = 'app\\controller\\'.$controller[1].'ControllerAPI';
@@ -208,7 +195,6 @@ class RouterCore
         } else {
             $uri = $this->uri;
             $uri = explode('/',$uri);
-            //dd($this->getArr);
             foreach ($this->getArr as $get) {
                 $r = substr($get['router'], 1);
                 
@@ -229,10 +215,8 @@ class RouterCore
 
     private function executeDelete()
     {
-       ///dd('aqui');
         $uri_id = $this->uri; 
         $url = explode('/', $uri_id);
-        //dd($url);
         if ($url[0] === 'api') {
 
             $controller = explode('-',$url[1]);
@@ -283,7 +267,6 @@ class RouterCore
             }  
 
         } else {
-            dd('executeController');
             foreach ($this->getArr as $get) {
                 $r = substr($get['router'], 1);
     
@@ -299,14 +282,12 @@ class RouterCore
     
                     $this->executeController($get['call']);
                 }
-                dd('executeController');
             }
         }
     }
 
     private function executeController($get)
-    {          
-        //dd($get);
+    {     
         $ex = explode('@', $get);
         if (!isset($ex[0]) || !isset($ex[1])) {
             (new \app\controller\MessageController)->message('Dados inválidos', 'Controller ou método não encontrado: ' . $get, 404);
@@ -323,7 +304,7 @@ class RouterCore
             (new \app\controller\MessageController)->message('Dados inválidos', 'Método não encontrado: ' . $get, 404);
             return;
         }
-        //dd($ex[1]);
+
         call_user_func_array([
             new $cont,
             $ex[1]
@@ -331,11 +312,8 @@ class RouterCore
     }
 
     private function executeControllerAPI($get, $parametros)
-    {   
-        //dd($get);
+    {           
         $ex = explode('@', $get);
-        //$args[0] = $ex[1];
-        //$args[1] = $parametros;
         if (!isset($ex[0]) || !isset($ex[1])) {
             (new \app\controller\MessageController)->message('Dados inválidos', 'Controller ou método não encontrado: ' . $get, 404);
             return;

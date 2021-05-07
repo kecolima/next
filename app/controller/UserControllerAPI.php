@@ -26,21 +26,14 @@ class UserControllerAPI extends Controller
      * 
      * @return bool
      */
-    public function validarJWT(){
-
-        $body = file_get_contents('php://input');
-        $jsonBody = json_decode($body, true);
-        $parametros = $jsonBody;        
-        //dd($parametros);
-        $token = $this->getInput($parametros);
-        $token = $token->token;
-        
-        $part = explode(".",$token);
+    public function validarJWT(string $jwt)
+    {        
+        $part = explode(".",$jwt);
         $header = $part[0];
         $payload = $part[1];
         $signature = $part[2];
 
-        $valid = hash_hmac('sha256',"$header.$payload",'minha-senha',true);
+        $valid = hash_hmac('sha256',"$header.$payload",'123',true);
         $valid = base64_encode($valid);
 
         if($signature == $valid){
@@ -57,16 +50,17 @@ class UserControllerAPI extends Controller
      */
     public function index()
     {        
-        $jwt = $this->validarJWT();
-        //dd($jwt);
+        $body = file_get_contents('php://input');
+        $jsonBody = json_decode($body, true);
+        $parametros = $jsonBody;        
+        $jwt = $this->validarJWT($parametros['token']);
+
         if ($jwt) {
 
             $result = $this->userModel->getAll();
-            //return json_encode($result);
             echo json_encode($result);
-
-        }
-        
+        }   
+             
         echo json_encode('erro');
     }
 
@@ -77,7 +71,11 @@ class UserControllerAPI extends Controller
      */
     public function getById()
     {     
-        $jwt = $this->validarJWT();
+        $body = file_get_contents('php://input');
+        $jsonBody = json_decode($body, true);
+        $parametros = $jsonBody;        
+        $jwt = $this->validarJWT($parametros['token']);   
+
         if($jwt){      
 
             $uri = $_SERVER['REQUEST_URI'];        
@@ -93,17 +91,14 @@ class UserControllerAPI extends Controller
     }
     
     public function insert()
-    { 
-        $jwt = $this->validarJWT();
-        if($jwt){ 
+    {         
+        $body = file_get_contents('php://input');
+        $jsonBody = json_decode($body, true);
+        $parametros = $jsonBody;        
+        $jwt = $this->validarJWT($parametros['token']);        
+        $user = $this->getInput($parametros);
 
-            $body = file_get_contents('php://input');
-            $jsonBody = json_decode($body, true);
-            $parametros = $jsonBody; 
-
-            //dd($parametros);
-
-            $user = $this->getInput($parametros);
+        if($jwt){             
             
             $result = $this->userModel->insert($user);
 
@@ -124,11 +119,8 @@ class UserControllerAPI extends Controller
                     422
                 );
             }
-        */       
-
-        
+        */ 
     }
-
     
     /**
      * Realiza a busca na base de dados e exibe na página de resultados
@@ -137,7 +129,11 @@ class UserControllerAPI extends Controller
      */
     public function update()
     {
-        $jwt = $this->validarJWT();
+        $body = file_get_contents('php://input');
+        $jsonBody = json_decode($body, true);
+        $parametros = $jsonBody;        
+        $jwt = $this->validarJWT($parametros['token']);   
+
         if($jwt){
             $user = $this->getInput();
             //$param['id'] = Input::get('id');

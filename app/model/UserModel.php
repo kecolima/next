@@ -30,8 +30,7 @@ class UserModel
      * @return int Retorna o ID do User inserido ou -1 em caso de erro
      */
     public function insert(object $params)
-    {         
-        //dd($params);  
+    {   
         $sql = 'INSERT INTO user (name, email, password) VALUES (:name, :email, :password)';
 
         $params = [
@@ -118,8 +117,7 @@ class UserModel
      * @return object Retorna um objeto populado com os dados do Empresa ou se não encontrar com seus valores nulos
      */
     public function getUser(string $param)
-    {
-        dd($param);
+    {        
         $sql = 'SELECT * FROM user WHERE name = :valor';
         //Executamos a consulta chamando o método da modelo. Atribuimos o resultado a variável $dr
 
@@ -139,7 +137,7 @@ class UserModel
         
         $listaUser[] = $this->collection($dr);
             
-        //Retornamos a lista de Empresas
+        //Retornamos a lista de Users
         return $listaUser;
     }
 
@@ -177,16 +175,16 @@ class UserModel
      * @return object Retorna um objeto populado com os dados do Empresa ou se não encontrar com seus valores nulos
      */
     public function getValidarUser(object $params)
-    {        
-        $sql = 'SELECT * FROM user WHERE email = :email';
+    {   
+        $sql = 'SELECT * FROM user WHERE email = :email AND password = :senha';
         //Executamos a consulta chamando o método da modelo. Atribuimos o resultado a variável $dr
 
         $param = [
-            ':email' => $params->email
+            ':email' => $params->email,
+            ':senha' => $params->senha
         ];
 
-        $dt = $this->pdo->executeQuery($sql, $param); 
-        //dd($dt);    
+        $dt = $this->pdo->executeQuery($sql, $param);     
        
         if ($dt) {
             return 1; 

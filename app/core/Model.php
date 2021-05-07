@@ -5,11 +5,10 @@ namespace app\Core;
 use PDO;
 
 /**
- * PDO PHP Persistence Class
- * https://github.com/victortassinari/pdophpclass
+ * PDO PHP Persistence Class 
  *
  *
- * @author Victor Tassinari - victortassinarix@gmail.com
+ * @author Alex Samapaio - kecolima@hotmail.com
  */
 class Model
 {
