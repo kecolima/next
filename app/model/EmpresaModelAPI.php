@@ -7,7 +7,7 @@ use app\core\Model;
 /**
  * Classe responsável por gerenciar a conexão com a tabela empresa.
  */
-class EmpresaModel
+class EmpresaModelAPI
 {
 
     //Instância da classe model
@@ -35,7 +35,7 @@ class EmpresaModel
 
         $params = [
             ':nome'      => $params->nome,            
-            ':id_user'      => $params->id_user
+            ':id_user'   => $params->id_user
         ];
 
         if (!$this->pdo->executeNonQuery($sql, $params))
@@ -50,11 +50,11 @@ class EmpresaModel
      * @param  Object $params Lista com os parâmetros a serem inseridos
      * @return bool True em caso de sucesso e false em caso de erro
      */
-    public function update(object $params, int $id)
+    public function update(object $params)
     {          
         $sql = 'UPDATE empresa SET nome = :nome, id_user = :id_user WHERE id = :id';      
         $params = [
-            ':id'        => $id,
+            ':id'        => $params->id,
             ':nome'      => $params->nome,
             ':id_user'   => $params->id_user
         ];
@@ -250,8 +250,8 @@ class EmpresaModel
             'id'             => $param['id']       ?? null,
             'nome'           => $param['nome']     ?? null,
             'id_user'        => $param['id_user']  ?? null,
-            'link_editar'    => BASE.'editar-empresa/'.$param['id']  ?? null,
-            'link_deletar'   => BASE.'excluir-empresa/'.$param['id'] ?? null
+            'link_editar'    => BASE.'api/editar-empresa/'.$param['id']  ?? null,
+            'link_deletar'   => BASE.'api/excluir-empresa/'.$param['id'] ?? null
         ];
     }
 
@@ -264,13 +264,13 @@ class EmpresaModel
     private function collectionUsers($param)
     {        
         return (object)[
-            'id'               => $param['id']                                          ?? null,
-            'name'             => $param['name']                                        ?? null,
-            'email'            => $param['email']                                       ?? null,
-            'password'         => $param['password']                                    ?? null,
-            'link_empresa'     => BASE.'ver-empresa/'.$param['id'].'/'.$param['name']   ?? null,
-            'link_editar'      => BASE.'editar-user/'.$param['id']                      ?? null,
-            'link_deletar'     => BASE.'excluir-user/'.$param['id']                      ?? null
+            'id'               => $param['id']                                              ?? null,
+            'name'             => $param['name']                                            ?? null,
+            'email'            => $param['email']                                           ?? null,
+            'password'         => $param['password']                                        ?? null,
+            'link_empresa'     => BASE.'api/ver-empresa/'.$param['id'].'/'.$param['name']   ?? null,
+            'link_editar'      => BASE.'api/editar-user/'.$param['id']                      ?? null,
+            'link_deletar'     => BASE.'api/excluir-user/'.$param['id']                     ?? null
         ];
     }
 }

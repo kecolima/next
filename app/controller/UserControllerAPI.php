@@ -3,7 +3,7 @@
 namespace app\controller;
 
 use app\core\Controller;
-use app\model\UserModel;
+use app\model\UserModelAPI;
 use app\classes\Input;
 
 class UserControllerAPI extends Controller
@@ -18,7 +18,7 @@ class UserControllerAPI extends Controller
      */
     public function __construct()
     {
-        $this->userModel = new userModel();
+        $this->userModel = new userModelAPI();
     }
 
     /**
@@ -26,14 +26,19 @@ class UserControllerAPI extends Controller
      * 
      * @return bool
      */
-    public function validarJWT(string $jwt)
-    {        
+    public function validarJWT()
+    {  
+        $http_header = apache_request_headers();
+        $bearer = explode(' ',$http_header['Authorization']);
+
+        $jwt = $bearer[1];
+        $key = 'minha-chave';
         $part = explode(".",$jwt);
         $header = $part[0];
         $payload = $part[1];
         $signature = $part[2];
 
-        $valid = hash_hmac('sha256',"$header.$payload",'123',true);
+        $valid = hash_hmac('sha256',"$header.$payload",$key,true);
         $valid = base64_encode($valid);
 
         if($signature == $valid){
@@ -49,19 +54,15 @@ class UserControllerAPI extends Controller
      * @return void
      */
     public function index()
-    {        
-        $body = file_get_contents('php://input');
-        $jsonBody = json_decode($body, true);
-        $parametros = $jsonBody;        
-        $jwt = $this->validarJWT($parametros['token']);
+    {                  
+        $jwt = $this->validarJWT();
 
         if ($jwt) {
-
             $result = $this->userModel->getAll();
             echo json_encode($result);
-        }   
-             
-        echo json_encode('erro');
+        } else {
+            echo json_encode('erro');
+        }
     }
 
     /**
@@ -70,56 +71,48 @@ class UserControllerAPI extends Controller
      * @return void
      */
     public function getById()
-    {     
-        $body = file_get_contents('php://input');
-        $jsonBody = json_decode($body, true);
-        $parametros = $jsonBody;        
-        $jwt = $this->validarJWT($parametros['token']);   
+    {   
+        $jwt = $this->validarJWT();
 
         if($jwt){      
-
             $uri = $_SERVER['REQUEST_URI'];        
             $uri = explode('/',$uri);
             $user = end($uri); 
             $result = $this->userModel->getById($user);
             echo json_encode($result);
-
+            die();
+        }else {
+            echo json_encode('erro');
+            die();
         }
-
-        echo json_encode('erro');
-
     }
     
+    /**
+     * Realiza a inserção na base de dados e exibe na página de resultados
+     *
+     * @return void
+     */
     public function insert()
-    {         
-        $body = file_get_contents('php://input');
-        $jsonBody = json_decode($body, true);
-        $parametros = $jsonBody;        
-        $jwt = $this->validarJWT($parametros['token']);        
-        $user = $this->getInput($parametros);
+    {           
+        $jwt = $this->validarJWT();
 
-        if($jwt){             
-            
+        if($jwt){  
+            $body = file_get_contents('php://input');
+            $jsonBody = json_decode($body, true);
+            $parametros = $jsonBody;
+            $user = $this->getInput($parametros);
+    
             $result = $this->userModel->insert($user);
-
             if ($result <= 0) {
-                echo 'Erro ao cadastrar um novo user';
+                echo json_encode('Erro ao cadastrar um novo user');
                 die();
+            } else {
+                echo json_encode('sucess');
             }
         } else {
             echo json_encode('erro');
-        }       
-             
-        /*
-            if (!$this->validate($user, false)) {
-                return  $this->showMessage(
-                    'Formulário inválido', 
-                    'Os dados fornecidos são inválidos',
-                    BASE  . 'novo-user/',
-                    422
-                );
-            }
-        */ 
+            die();
+        } 
     }
     
     /**
@@ -128,32 +121,49 @@ class UserControllerAPI extends Controller
      * @return void
      */
     public function update()
-    {
-        $body = file_get_contents('php://input');
-        $jsonBody = json_decode($body, true);
-        $parametros = $jsonBody;        
-        $jwt = $this->validarJWT($parametros['token']);   
-
-        if($jwt){
-            $user = $this->getInput();
-            //$param['id'] = Input::get('id');
-            $user = $this->getInput();
-            dd($user);
-            $this->load('user/editar', [
-                'id' => user['id'],           
-            ]); 
-            
-            $result = $this->userModel->update($user);
-
+    {   
+        $jwt = $this->validarJWT();  
+       
+        if($jwt){  
+            $body = file_get_contents('php://input');
+            $jsonBody = json_decode($body, true);
+            $parametros = $jsonBody; 
+            $user = $this->getInput($parametros);                   
+            $result = $this->userModel->update($user);            
             if ($result <= 0) {
-                echo 'Erro ao editar um novo user';
+                echo json_encode('erro');
                 die();
             }
-
-            redirect(BASE . 'editar-user/' . $result);
+            echo json_encode('success');
+        }else {
+            echo json_encode('erro');
         }
+    }
 
-        echo json_encode('erro');
+    /**
+     * Realiza a deleção na base de dados e exibe na página de resultados
+     *
+     * @return void
+     */
+    public function delete()
+    {            
+        $jwt = $this->validarJWT();
+
+        if($jwt){      
+            $uri = $_SERVER['REQUEST_URI'];        
+            $uri = explode('/',$uri);
+            $user = end($uri); 
+            $result = $this->userModel->delete($user); 
+            
+            if ($result->id != '') {
+                echo json_encode('erro');
+                die();
+            } else {
+                echo json_encode('success');
+            }            
+        }else {
+            echo json_encode('erro');
+        }
     }
 
     /**
@@ -166,10 +176,8 @@ class UserControllerAPI extends Controller
         return (object)[
             'id'        => $param['id'],
             'email'     => $param['email'],
-            'password'  => $param['senha'],
-            'name'      => $param['name'],
-            'data'      => $param['data'],
-            'token'     => $param['token']
+            'senha'     => $param['senha'],
+            'nome'      => $param['nome'],
         ];
     }
 

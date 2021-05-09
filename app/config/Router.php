@@ -25,13 +25,15 @@ $this->get('/buscar-empresa', 'EmpresaController@buscar');
 $this->get('/ver-empresa', 'EmpresaController@getEmpresas');
 
 $this->get('api/user', 'UserControllerAPI@index');
-$this->get('api/user/id', 'UserControllerAPI@getById');
-$this->get('api/editar-user', 'UserControllerAPI@update');
+$this->get('api/user/{id}', 'UserControllerAPI@getById');
+$this->post('api/update-user', 'UserControllerAPI@update');
 $this->post('api/insert-user', 'UserControllerAPI@insert');
+$this->get('api/delete-user/{id}', 'UserControllerAPI@delete');
 
 $this->get('api/empresa', 'EmpresaControllerAPI@index');
-$this->get('api/empresa/id', 'EmpresaControllerAPI@getById');
-$this->post('api/editar-empresa', 'EmpresaControllerAPI@update');
+$this->get('api/empresa/{id}', 'EmpresaControllerAPI@getById');
+$this->post('api/update-empresa', 'EmpresaControllerAPI@update');
 $this->post('api/insert-empresa', 'EmpresaControllerAPI@insert');
+$this->get('api/delete-empresa/{id}', 'EmpresaControllerAPI@delete');
 
 $this->get('api/auth', 'AuthController@login');

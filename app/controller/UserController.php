@@ -160,7 +160,7 @@ class UserController extends Controller
         $result = $this->userModel->delete($user);        
        
         if ($result <= 0) {
-            echo 'Erro ao deletar uma novo empresa';
+            echo 'Erro ao deletar uma novo usuaario';
             die();
         }
 

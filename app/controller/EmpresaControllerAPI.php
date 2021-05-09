@@ -3,7 +3,7 @@
 namespace app\controller;
 
 use app\core\Controller;
-use app\model\EmpresaModel;
+use app\model\EmpresaModelAPI;
 use app\classes\Input;
 
 class EmpresaControllerAPI extends Controller
@@ -19,7 +19,7 @@ class EmpresaControllerAPI extends Controller
      */
     public function __construct()
     {
-        $this->empresaModel = new empresaModel();
+        $this->empresaModel = new empresaModelAPI();
     }
 
     /**
@@ -27,14 +27,19 @@ class EmpresaControllerAPI extends Controller
      * 
      * @return bool
      */
-    public function validarJWT(string $jwt)
-    {        
+    public function validarJWT()
+    {      
+        $http_header = apache_request_headers();
+        $bearer = explode(' ',$http_header['Authorization']);
+
+        $jwt = $bearer[1];
+        $key = 'minha-chave';  
         $part = explode(".",$jwt);
         $header = $part[0];
         $payload = $part[1];
         $signature = $part[2];
 
-        $valid = hash_hmac('sha256',"$header.$payload",'123',true);
+        $valid = hash_hmac('sha256',"$header.$payload",$key,true);
         $valid = base64_encode($valid);
 
         if($signature == $valid){
@@ -50,19 +55,15 @@ class EmpresaControllerAPI extends Controller
      * @return void
      */
     public function index()
-    {
-        $body = file_get_contents('php://input');
-        $jsonBody = json_decode($body, true);
-        $parametros = $jsonBody;        
-        $jwt = $this->validarJWT($parametros['token']);
+    {                       
+        $jwt = $this->validarJWT();  
 
         if ($jwt) {
-
             $result = $this->empresaModel->getAll();
             echo json_encode($result);
-        }   
-             
-        echo json_encode('erro');
+        } else {
+            echo json_encode('erro');
+        } 
     }
 
     /**
@@ -71,67 +72,45 @@ class EmpresaControllerAPI extends Controller
      * @return void
      */
     public function getById()
-    {     
-        $body = file_get_contents('php://input');
-        $jsonBody = json_decode($body, true);
-        $parametros = $jsonBody;        
-        $jwt = $this->validarJWT($parametros['token']);   
+    {             
+        $jwt = $this->validarJWT();
 
-        if($jwt){      
-
-        $uri = $_SERVER['REQUEST_URI'];        
-        $uri = explode('/',$uri);
-        $empresa = end($uri); 
-        $result = $this->empresaModel->getById($empresa);
-        echo json_encode($result);
-
-        }
-
-        echo json_encode('erro');
-        
+        if($jwt){     
+            $uri = $_SERVER['REQUEST_URI'];        
+            $uri = explode('/',$uri);
+            $empresa = end($uri); 
+            $result = $this->empresaModel->getById($empresa);
+            echo json_encode($result);
+            die();
+        } else {
+            echo json_encode('erro');
+        }        
     }
     
+    /**
+     * Realiza a inserção na base de dados e exibe na página de resultados
+     *
+     * @return void
+     */
     public function insert()
-    { 
-        $body = file_get_contents('php://input');
-        $jsonBody = json_decode($body, true);
-        $parametros = $jsonBody;        
-        $jwt = $this->validarJWT($parametros['token']);        
-        $user = $this->getInput($parametros);
+    {   
+        $jwt = $this->validarJWT();
 
         if($jwt){ 
             $body = file_get_contents('php://input');
             $jsonBody = json_decode($body, true);
-            $parametros = $jsonBody; 
-
+            $parametros = $jsonBody;
             $empresa = $this->getInput($parametros);
-
             $result = $this->empresaModel->insert($empresa);
-
             if ($result <= 0) {
-                echo 'Erro ao cadastrar um novo empresa';
+                echo json_encode('Erro ao cadastrar um novo empresa');
                 die();
-            }
-        
-            if (!$this->validate($empresa, false)) {
-                return  $this->showMessage(
-                    'Formulário inválido', 
-                    'Os dados fornecidos são inválidos',
-                    BASE  . 'novo-empresa/',
-                    422
-                );
-            }
-
-            $result = $this->empresaModel->insert($empresa);
-
-            if ($result <= 0) {
-                echo 'Erro ao cadastrar um novo empresa';
-                die();
+            } else {
+                echo json_encode('success');
             }
         } else {
             echo json_encode('erro');
-        }       
-        
+        } 
     }
     
     /**
@@ -141,28 +120,48 @@ class EmpresaControllerAPI extends Controller
      */
     public function update()
     {
-        $body = file_get_contents('php://input');
-        $jsonBody = json_decode($body, true);
-        $parametros = $jsonBody;        
-        $jwt = $this->validarJWT($parametros['token']);   
+        $jwt = $this->validarJWT();  
 
         if($jwt){
             $body = file_get_contents('php://input');
             $jsonBody = json_decode($body, true);
-            $parametros = $jsonBody; 
-
-            $empresa = $this->getInput($parametros);
-
-            $result = $this->empresaModel->update($empresa);
-
+            $parametros = $jsonBody;             
+            $empresa = $this->getInput($parametros);           
+            $result = $this->empresaModel->update($empresa);            
             if ($result <= 0) {
-                echo 'Erro ao cadastrar um novo empresa';
+                echo json_encode('Erro ao cadastrar um novo empresa');
                 die();
+            } else {
+                echo json_encode('success');
             }
+        } else {
+            echo json_encode('erro');
+        }        
+    }
+
+    /**
+     * Realiza a deleção na base de dados e exibe na página de resultados
+     *
+     * @return void
+     */
+    public function delete()
+    {            
+        $jwt = $this->validarJWT();
+
+        if($jwt){      
+            $uri = $_SERVER['REQUEST_URI'];        
+            $uri = explode('/',$uri);
+            $empresa = end($uri); 
+            $result = $this->empresaModel->delete($empresa);             
+            if ($result->id != '') {
+                echo json_encode('erro');
+                die();
+            } else {
+                echo json_encode('success');
+            }            
+        } else {
+            echo json_encode('erro');
         }
-        
-        echo json_encode('erro');
-        
     }
 
     /**
@@ -174,6 +173,7 @@ class EmpresaControllerAPI extends Controller
     {
         return (object)[
             'id'        => $param['id'],
+            'id_user'   => $param['id_user'],
             'nome'      => $param['nome']
         ];
     }

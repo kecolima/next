@@ -146,7 +146,7 @@ class RouterCore
             $body = file_get_contents('php://input');
             $jsonBody = json_decode($body, true);
             $parametros = $jsonBody; 
-            if ($controller[0] === 'editar') {
+            if ($controller[0] === 'update') {
                 
                     $cont = 'app\\controller\\'.$controller[1].'ControllerAPI';
                     $get['call'] = $controller[1].'ControllerAPI@update';
@@ -188,7 +188,7 @@ class RouterCore
                 $this->executeControllerAPI($get['call'], false);
             } else {
                 http_response_code(404);
-                echo json_encode(array('status' => 'errorrr', 'data' =>  $response), JSON_UNESCAPED_UNICODE);
+                echo json_encode(array('status' => 'error', 'data' =>  $response), JSON_UNESCAPED_UNICODE);
                 exit;
             }  
 
@@ -214,7 +214,7 @@ class RouterCore
     }
 
     private function executeDelete()
-    {
+    {        
         $uri_id = $this->uri; 
         $url = explode('/', $uri_id);
         if ($url[0] === 'api') {
@@ -223,13 +223,13 @@ class RouterCore
             $body = file_get_contents('php://input');
             $jsonBody = json_decode($body, true);
             $parametros = $jsonBody; 
-
-            if ($controller[0] === 'editar') {
-                
+            
+            if ($controller[0] === 'delete') {
+           
                     $cont = 'app\\controller\\'.$controller[1].'ControllerAPI';
-                    $get['call'] = $controller[1].'ControllerAPI@update';
+                    $get['call'] = $controller[1].'ControllerAPI@delete';
                  
-                    $this->executeControllerAPI($get['call'],  $parametros);
+                    $this->executeControllerAPI($get['call'],  $url[2]);
                     /*
                     try {
                         $response = call_user_func_array(array(new $cont, $method), $url);    
@@ -242,24 +242,6 @@ class RouterCore
                         exit;
                     }
                     */
-            } else if ($controller[0] === 'insert') {
-
-                    $cont = 'app\\controller\\'.$controller[1].'ControllerAPI';
-                    $get['call'] = $controller[1].'ControllerAPI@insert';                   
-
-                    $this->executeControllerAPI($get['call'],  $parametros);
-                    /*
-                    try {
-                        $response = call_user_func_array(array(new $cont, $method), $url);    
-                        http_response_code(200);
-                        echo json_encode(array('status' => 'sucess', 'data' => $response));
-                        exit;
-                    } catch (\Exception $e) {
-                        http_response_code(404);
-                        echo json_encode(array('status' => 'error', 'data' => $e->getMessage()), JSON_UNESCAPED_UNICODE);
-                        exit;
-                    }
-                    */                            
             } else {
                 http_response_code(404);
                 echo json_encode(array('status' => 'errorrr', 'data' =>  $response), JSON_UNESCAPED_UNICODE);

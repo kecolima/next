@@ -35,13 +35,12 @@ class AuthController extends Controller
         $parametros = $jsonBody; 
         $user = $this->getInput($parametros); 
 
-        $result = $this->userModel->getValidarUser($user);       
+        $result = $this->userModel->getValidarUser($user);
 
-        $host = 'localhost';
-        $name = $parametros['nome'];
+        $host = 'localhost';        
         $email = $parametros['email'];
-        $senha = $parametros['senha'];     
-        
+        $senha = $parametros['senha']; 
+
         if ($result == 1) {
         
             $header = [
@@ -53,22 +52,37 @@ class AuthController extends Controller
             
             $payload = [
                 'iss' => 'localhost',
-                'name' => $name,
                 'email' => $email
             ];
 
             $payload = json_encode($payload);
             $payload = base64_encode($payload);
             
-            $signature = hash_hmac('sha256',"$header.$payload",$senha,true);
+            $signature = hash_hmac('sha256',"$header.$payload",'minha-chave',true);
             $signature = base64_encode($signature);
             
             $token = "$header.$payload.$signature";
 
-           echo $token;
-        } 
+            echo $token;
 
-        throw new \Exception('Não autenticado');
-    } 
-   
+        } else {
+
+            echo 'Não autenticado';
+
+        }
+        
+    }
+    
+    /**
+     * Retorna os dados do formulário em uma classe padrão stdObject
+     *
+     * @return object
+    */
+    private function getInput($param)
+    {
+        return (object)[
+            'email'    => $param['email'],
+            'senha'    => $param['senha'],
+        ];
+    }
 }
