@@ -4,6 +4,9 @@ $this->get('/', 'PagesController@home');
 $this->get('/contato', 'PagesController@contato');
 $this->post('/pesquisa', 'PagesController@pesquisar');
 
+$this->get('/login', 'LoginController@index');
+$this->get('/login-user', 'LoginController@login');
+
 $this->get('/user', 'UserController@index');
 $this->get('/novo-user', 'UserController@novo');
 $this->get('/editar-user', 'UserController@editar');

@@ -23,7 +23,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Método construtor
+     * Método responsável por validar o JWT
      *
      * @return String
      */
