@@ -177,6 +177,7 @@ class UsuarioControllerAPI extends Controller
             'id'        => $param['id'],
             'email'     => $param['email'],
             'nome'      => $param['nome'],
+            'senha'     => $param['senha'],
         ];
     }
 

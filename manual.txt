@@ -1,0 +1,94 @@
+Documentação da API - NEXT
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
+
+Métodos de autenticação Bearer Token
+ 
+ - http://localhost/next/api/auth
+
+	{       
+        "email": "admin@admin.com",
+        "senha": "admin"
+    }
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++  
+
+Métodos GET (consulta)
+
+    ## Usuário ##
+
+http://localhost/next/api/usuario
+ => url que traz todos usuários.
+
+http://localhost/next/api/usuario/{id}
+ => url que traz o usuário, Deve passar como parâmetro o ID do usuário.
+
+   ## Empresa ##
+
+http://localhost/next/api/empresa
+=> url que traz todos empresas.
+
+http://localhost/next/api/empresa/{id}
+ => url que traz empresa, Deve passar como parâmetro o ID do empresa.
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   
+
+Métodos POST 
+ 
+    ## Usuário ##
+
+http://localhost/next/api/insert-usuario
+
+- Inserir usuário
+
+{       
+    "nome": "string",
+    "email": "email",
+    "senha": "password"
+}
+
+http://localhost/next/api/update-usuario
+
+- Alterar usuário
+
+{ 
+    "id": "int",
+    "nome": "string",
+    "email": "email",
+    "senha": "password"
+}
+
+   ## Empresa ##
+
+http://localhost/next/api/insert-empresa
+
+- Inserir empresa
+
+{       
+    "nome": "string",
+    "id_usuario": "int"
+}
+
+http://localhost/next/api/update-empresa
+
+- Alterar empresa
+
+{ 
+    "id": "int",
+    "nome": "string",
+    "id_usuario": "int"
+}
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++   
+
+Métodos DELETE
+
+    ## Usuário ##
+
+http://localhost/next/api/delete-usuario/{id}
+ => url que deleta usuário.
+
+ ## Empresa ##
+
+http://localhost/next/api/delete-empresa/{id}
+ => url que deleta empresa.

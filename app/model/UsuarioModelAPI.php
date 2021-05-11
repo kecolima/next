@@ -31,11 +31,12 @@ class UsuarioModelAPI
      */
     public function insert(object $params)
     {   
-        $sql = 'INSERT INTO usuario (nome, email,data) VALUES (:nome, :email, :data)';
+        $sql = 'INSERT INTO usuario (nome, email, senha, data) VALUES (:nome, :email, :senha, :data)';
 
         $params = [
             ':nome'      => $params->nome,
             ':email'     => $params->email,
+            ':senha'     => $params->senha,
             ':data'      => date('Y/m/d'),
         ];
 
@@ -54,12 +55,13 @@ class UsuarioModelAPI
      */
     public function update(object $params)
     {
-        $sql = 'UPDATE usuario SET nome = :nome, email = :email, data = :data WHERE id = :id';
+        $sql = 'UPDATE usuario SET nome = :nome, email = :email, senha = :senha, data = :data WHERE id = :id';
 
         $params = [
             ':id'        => $params->id,
             ':nome'      => $params->nome,
             ':email'     => $params->email,
+            ':senha'     => $params->senha,
             ':data'      => date('Y/m/d'),
         ];
 
@@ -74,7 +76,7 @@ class UsuarioModelAPI
     public function getAll()
     {
         //Excrevemos a consulta SQL e atribuimos a váriavel $sql
-        $sql = 'SELECT id, nome, email, data FROM usuario ORDER BY nome ASC';
+        $sql = 'SELECT id, nome, email, senha, data FROM usuario ORDER BY nome ASC';
 
         //Executamos a consulta chamando o método da modelo. Atribuimos o resultado a variável $dr
         $dt = $this->pdo->executeQuery($sql);
@@ -99,7 +101,7 @@ class UsuarioModelAPI
      */
     public function getById(int $id)
     {
-        $sql = 'SELECT id, nome, email, data FROM usuario WHERE id = :id';
+        $sql = 'SELECT id, nome, email, senha, data FROM usuario WHERE id = :id';
 
         $param = [
             ':id' => $id
@@ -118,11 +120,11 @@ class UsuarioModelAPI
      */
     public function getUser(string $param)
     {        
-        $sql = 'SELECT * FROM usuario WHERE nome = :valor';
+        $sql = 'SELECT * FROM usuario WHERE nome = :nome';
         //Executamos a consulta chamando o método da modelo. Atribuimos o resultado a variável $dr
 
         $param = [
-            ':valor' => $param
+            ':nome' => $param
         ];
 
         $dt = $this->pdo->executeQuery($sql, $param); 
@@ -176,21 +178,20 @@ class UsuarioModelAPI
      */
     public function getValidarUser(object $params)
     {   
-        $sql = 'SELECT * FROM administrador WHERE email = :email AND senha = :senha';
+        $sql = 'SELECT * FROM usuario WHERE email = :email';
         //Executamos a consulta chamando o método da modelo. Atribuimos o resultado a variável $dr
 
         $param = [
             ':email' => $params->email,
-            ':senha' => $params->senha
         ];
 
         $dt = $this->pdo->executeQuery($sql, $param);     
        
-        if ($dt) {
-            return 1; 
-        }           
+        if ($dt['id']) {
+            return -1; //Código de erro
+        }  
 
-        return -1; //Código de erro
+        return 1; 
     }
 
     /**

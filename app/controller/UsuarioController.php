@@ -141,7 +141,8 @@ class UsuarioController extends Controller
         return (object)[
             'id'        => Input::get('id', FILTER_SANITIZE_NUMBER_INT),
             'nome'      => Input::post('txtNome'),
-            'email'     => Input::post('txtEmail')
+            'email'     => Input::post('txtEmail'),
+            'senha'     => Input::post('txtSenha'),
         ];
     }
 

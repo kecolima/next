@@ -13,7 +13,7 @@
         <div class="mt-3">
             <label for="txtNome">Nome do usuário</label>
             <input type="hidden" id="id" name="id" value="{{usuario.id}}"/>
-            <input type="text" id="txtNome" name="txtNome" class="form-control" placeholder="{{usuario.name}}" required>
+            <input type="text" id="txtNome" name="txtNome" class="form-control" placeholder="{{usuario.nome}}" required>
         </div>
 
         <div class="mt-3">

@@ -27,7 +27,8 @@ ii. MariaDB - https://mariadb.org/download/ . GIT - https://git-scm.com/ - Versi
 
 # 4. ATIVIDADE A SER DESENVOLVIDA
 Criar um sistema que atenda as necessidades abaixo:
-- Sistema com autenticação de usuário e senha; - Criar menu de usuários com as funcionalidades abaixo
+- Sistema com autenticação de usuário e senha; 
+- Criar menu de usuários com as funcionalidades abaixo
  
 i- listar os usuários;
 

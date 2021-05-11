@@ -39,15 +39,16 @@ class LoginController extends Controller
     public function login()
     {
         $usuario = $this->getInput();
-        $result_usuario = $this->usuarioModel->getValidarUser($usuario);
-        //dd($result_usuario[0]['id']);
+        $result_usuario = $this->usuarioModel->getValidarUserLogin($usuario);
+        $result_usuario = $result_usuario[0];
+       
         if ($result_usuario <= 0) {
             echo 'Usuário não cadastrado';
             redirect(BASE);
             die();
         }  else {
-            $_SESSION = $result_usuario[0];            
-            redirect(BASE . 'home');
+            $_SESSION = $result_usuario;            
+            $this->load('home/main', array('result_usuario' => $result_usuario));
         }   
     }
 

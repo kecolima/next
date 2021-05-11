@@ -31,11 +31,13 @@ class UsuarioModel
      */
     public function insert(object $params)
     {   
-        $sql = 'INSERT INTO usuario (nome, email) VALUES (:nome, :email)';
+        $sql = 'INSERT INTO usuario (nome, email, senha, data) VALUES (:nome, :email, :senha, :data)';
 
         $params = [
             ':nome'      => $params->nome,
-            ':email'     => $params->email
+            ':email'     => $params->email,
+            ':senha'     => $params->senha,
+            ':data'      => date('Y/m/d'),
         ];
 
         if (!$this->pdo->executeNonQuery($sql, $params))
@@ -52,13 +54,14 @@ class UsuarioModel
      */
     public function update(object $params, $id)
     {
-        $sql = 'UPDATE usuario SET nome = :nome, email = :email, data = :data WHERE id = :id';
+        $sql = 'UPDATE usuario SET nome = :nome, email = :email, senha = :senha, data = :data WHERE id = :id';
 
         $params = [
             ':id'        => $id,
             ':nome'      => $params->nome,
             ':email'     => $params->email,
-            ':data'     => null,
+            ':senha'     => $params->senha,
+            ':data'      => date('Y/m/d'),
         ];
 
         return $this->pdo->executeNonQuery($sql, $params);
@@ -72,7 +75,7 @@ class UsuarioModel
     public function getAll()
     {
         //Excrevemos a consulta SQL e atribuimos a váriavel $sql
-        $sql = 'SELECT id, nome, email, data FROM usuario ORDER BY nome ASC';
+        $sql = 'SELECT id, nome, email, senha, data FROM usuario ORDER BY nome ASC';
 
         //Executamos a consulta chamando o método da modelo. Atribuimos o resultado a variável $dr
         $dt = $this->pdo->executeQuery($sql);
@@ -97,7 +100,7 @@ class UsuarioModel
      */
     public function getById(int $id)
     {
-        $sql = 'SELECT id, nome, email, data FROM usuario WHERE id = :id';
+        $sql = 'SELECT id, nome, email, senha, data FROM usuario WHERE id = :id';
 
         $param = [
             ':id' => $id
@@ -116,11 +119,11 @@ class UsuarioModel
      */
     public function getUser(string $param)
     {        
-        $sql = 'SELECT * FROM usuario WHERE nome = :valor';
+        $sql = 'SELECT * FROM usuario WHERE nome = :nome';
         //Executamos a consulta chamando o método da modelo. Atribuimos o resultado a variável $dr
 
         $param = [
-            ':valor' => $param
+            ':nome' => $param
         ];
 
         $dt = $this->pdo->executeQuery($sql, $param); 
@@ -158,7 +161,7 @@ class UsuarioModel
         $sql = 'UPDATE empresa SET id_usuario = :id WHERE id_usuario = :id_usuario';      
         $params = [
             ':id_usuario' => $id,
-            ':id'      => '0'
+            ':id'         => '0'
         ];
 
         $this->pdo->executeNonQuery($sql, $params);  
@@ -174,21 +177,46 @@ class UsuarioModel
      */
     public function getValidarUser(object $params)
     {   
-        $sql = 'SELECT * FROM administrador WHERE email = :email AND senha = :senha';
+        $sql = 'SELECT * FROM usuario WHERE email = :email';
+        //Executamos a consulta chamando o método da modelo. Atribuimos o resultado a variável $dr
+
+        $param = [
+            ':email' => $params->email
+        ];
+
+        $dt = $this->pdo->executeQuery($sql, $param);     
+   
+        if ($dt['id']) {
+            return -1; //Código de erro
+        }           
+
+        return 1;
+    }
+
+    /**
+     * Retorna um único registro da base de dados através do ID informado
+     *
+     * @param  int $id ID do objeto a ser retornado
+     * @return object Retorna um objeto populado com os dados do Empresa ou se não encontrar com seus valores nulos
+     */
+    public function getValidarUserLogin(object $params)
+    {   
+        $sql = 'SELECT * FROM usuario WHERE email = :email AND senha = :senha';
         //Executamos a consulta chamando o método da modelo. Atribuimos o resultado a variável $dr
 
         $param = [
             ':email' => $params->email,
-            ':senha' => $params->senha
+            ':senha' => $params->senha,
         ];
 
         $dt = $this->pdo->executeQuery($sql, $param);     
-        
+       
         if ($dt) {
             return $dt; 
-        }           
-
+        }
+        
         return -1; //Código de erro
+         
     }
 
     /**
@@ -203,9 +231,10 @@ class UsuarioModel
             'id'               => $param['id']                                          ?? null,
             'nome'             => $param['nome']                                        ?? null,
             'email'            => $param['email']                                       ?? null,
+            'senha'            => $param['senha']                                       ?? null,
             'link_empresa'     => BASE.'ver-empresa/'.$param['id'].'/'.$param['nome']   ?? null,
-            'link_editar'      => BASE.'editar-usuario/'.$param['id']                      ?? null,
-            'link_deletar'     => BASE.'excluir-usuario/'.$param['id']                     ?? null
+            'link_editar'      => BASE.'editar-usuario/'.$param['id']                   ?? null,
+            'link_deletar'     => BASE.'excluir-usuario/'.$param['id']                  ?? null
         ];
     }
 }
