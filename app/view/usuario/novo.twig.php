@@ -1,14 +1,14 @@
 {% extends 'partials/body.twig.php'  %}
 
-{% block title %}Novo User - Mini Framework{% endblock %}
+{% block title %}Novo Usuário - NEXT{% endblock %}
 
 {% block body %}
-<div class="max-width center-screen bg-white padding mt-5">
+<div class="col-md-10 center-screen bg-white padding mt-5">
     <h1>Cadastrar User</h1>
 
     <hr>
 
-    <form action="{{BASE}}insert-user" method="post">
+    <form action="{{BASE}}insert-usuario" method="post">
 
         <div class="mt-3">
             <label for="txtNome">Nome do usuário</label>
@@ -16,7 +16,7 @@
         </div>
 
         <div class="mt-3">
-            <label for="txtEmail">email</label>
+            <label for="txtEmail">Email</label>
             <input type="text" id="txtEmail" name="txtEmail" class="form-control" placeholder="Email" required>
         </div>
 

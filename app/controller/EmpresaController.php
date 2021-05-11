@@ -41,7 +41,7 @@ class EmpresaController extends Controller
     public function novo()
     {   
         $result = $this->empresaModel->getUsers(); 
-        $this->load('empresa/novo', array('users' => $result));
+        $this->load('empresa/novo', array('usuarios' => $result));
     }
 
     public function insert()
@@ -102,7 +102,7 @@ class EmpresaController extends Controller
         $uri = explode('/',$uri);
         $empresa_id = end($uri);    
         $result = $this->empresaModel->getById($empresa_id); 
-        $this->load('empresa/editar', array('empresa' => $result, 'users' => $resultUsers));
+        $this->load('empresa/editar', array('empresa' => $result, 'usuarios' => $resultUsers));
     }
 
     /**
@@ -179,9 +179,9 @@ class EmpresaController extends Controller
     {
 
         return (object)[
-            'id'        => Input::get('id', FILTER_SANITIZE_NUMBER_INT),
-            'nome'      => Input::post('txtNome'),
-            'id_user'   => Input::post('txtUser')
+            'id'           => Input::get('id', FILTER_SANITIZE_NUMBER_INT),
+            'nome'         => Input::post('txtNome'),
+            'id_usuario'   => Input::post('txtUser')
         ];
     }
 
@@ -194,10 +194,10 @@ class EmpresaController extends Controller
     {           
         $uri = $_SERVER['REQUEST_URI'];        
         $uri = explode('/',$uri);
-        $user = end($uri);
+        $usuario = end($uri);
         $empresa =$uri[ count($uri) - 2 ];         
         $result = $this->empresaModel->getEmpresas($empresa);
-        $this->load('empresa/empresas', array('empresas' => $result, 'user' => $user));       
+        $this->load('empresa/empresas', array('empresas' => $result, 'usuario' => $usuario));       
     }
 
     /**

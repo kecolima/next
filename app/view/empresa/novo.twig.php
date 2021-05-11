@@ -1,9 +1,9 @@
 {% extends 'partials/body.twig.php'  %}
 
-{% block title %}Novo User - Mini Framework{% endblock %}
+{% block title %}Novo Empresa - NEXT{% endblock %}
 
 {% block body %}
-<div class="max-width center-screen bg-white padding mt-5">
+<div class="col-md-10 center-screen bg-white padding mt-5">
     <h1>Cadastrar Empresa</h1>
 
     <hr>
@@ -18,8 +18,8 @@
             <label for="txtUser">Usuário</label>
             <select class="form-control" id="txtUser" name="txtUser"> 
                 <option value="0">Selecione um usuário</option>
-                {% for user in users %}
-                    <option value="{{user.id}}">{{user.name}}</option>
+                {% for usuario in usuarios %}
+                    <option value="{{usuario.id}}">{{usuario.nome}}</option>
                 {% endfor %}
             </select>
         </div>

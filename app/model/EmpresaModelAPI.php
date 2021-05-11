@@ -31,11 +31,11 @@ class EmpresaModelAPI
      */
     public function insert(object $params)
     {
-        $sql = 'INSERT INTO empresa (nome, id_user) VALUES (:nome, :id_user)';
+        $sql = 'INSERT INTO empresa (nome, id_usuario) VALUES (:nome, :id_usuario)';
 
         $params = [
-            ':nome'      => $params->nome,            
-            ':id_user'   => $params->id_user
+            ':nome'         => $params->nome,            
+            ':id_usuario'   => $params->id_usuario
         ];
 
         if (!$this->pdo->executeNonQuery($sql, $params))
@@ -52,11 +52,11 @@ class EmpresaModelAPI
      */
     public function update(object $params)
     {          
-        $sql = 'UPDATE empresa SET nome = :nome, id_user = :id_user WHERE id = :id';      
+        $sql = 'UPDATE empresa SET nome = :nome, id_usuario = :id_usuario WHERE id = :id';      
         $params = [
-            ':id'        => $params->id,
-            ':nome'      => $params->nome,
-            ':id_user'   => $params->id_user
+            ':id'           => $params->id,
+            ':nome'         => $params->nome,
+            ':id_usuario'   => $params->id_usuario
         ];
 
         return $this->pdo->executeNonQuery($sql, $params);
@@ -89,7 +89,7 @@ class EmpresaModelAPI
     public function getAll()
     {
         //Excrevemos a consulta SQL e atribuimos a váriavel $sql
-        $sql = 'SELECT id, nome, id_user FROM empresa ORDER BY nome ASC';
+        $sql = 'SELECT id, nome, id_usuario FROM empresa ORDER BY nome ASC';
 
         //Executamos a consulta chamando o método da modelo. Atribuimos o resultado a variável $dr
         $dt = $this->pdo->executeQuery($sql);
@@ -114,7 +114,7 @@ class EmpresaModelAPI
     public function getUsers()
     {   
         //Excrevemos a consulta SQL e atribuimos a váriavel $sql
-        $sql = 'SELECT id, name, email, password, data FROM user ORDER BY name ASC';
+        $sql = 'SELECT id, nome, email, data FROM usuario ORDER BY nome ASC';
 
         //Executamos a consulta chamando o método da modelo. Atribuimos o resultado a variável $dr
         $dt = $this->pdo->executeQuery($sql);
@@ -211,15 +211,15 @@ class EmpresaModelAPI
      * @param  int $id ID do objeto a ser retornado
      * @return object Retorna um objeto populado com os dados do Empresa ou se não encontrar com seus valores nulos
      */
-    public function getEmpresas(int $id_user)
+    public function getEmpresas(int $id_usuario)
     {
        //Excrevemos a consulta SQL e atribuimos a váriavel $sql 
        
-       $sql = 'SELECT * FROM empresa  WHERE id_user = :id_user ORDER BY nome ASC ';
+       $sql = 'SELECT * FROM empresa  WHERE id_usuario = :id_usuario ORDER BY nome ASC ';
        //Executamos a consulta chamando o método da modelo. Atribuimos o resultado a variável $dr
 
        $param = [
-        ':id_user' => $id_user
+        ':id_usuario' => $id_usuario
        ];
 
        $dt = $this->pdo->executeQuery($sql, $param); 
@@ -247,9 +247,9 @@ class EmpresaModelAPI
     private function collection($param)
     {
         return (object)[
-            'id'             => $param['id']       ?? null,
-            'nome'           => $param['nome']     ?? null,
-            'id_user'        => $param['id_user']  ?? null,
+            'id'             => $param['id']                             ?? null,
+            'nome'           => $param['nome']                           ?? null,
+            'id_usuario'     => $param['id_usuario']                     ?? null,
             'link_editar'    => BASE.'api/editar-empresa/'.$param['id']  ?? null,
             'link_deletar'   => BASE.'api/excluir-empresa/'.$param['id'] ?? null
         ];
@@ -265,12 +265,11 @@ class EmpresaModelAPI
     {        
         return (object)[
             'id'               => $param['id']                                              ?? null,
-            'name'             => $param['name']                                            ?? null,
+            'nome'             => $param['nome']                                            ?? null,
             'email'            => $param['email']                                           ?? null,
-            'password'         => $param['password']                                        ?? null,
-            'link_empresa'     => BASE.'api/ver-empresa/'.$param['id'].'/'.$param['name']   ?? null,
-            'link_editar'      => BASE.'api/editar-user/'.$param['id']                      ?? null,
-            'link_deletar'     => BASE.'api/excluir-user/'.$param['id']                     ?? null
+            'link_empresa'     => BASE.'api/ver-empresa/'.$param['id'].'/'.$param['nome']   ?? null,
+            'link_editar'      => BASE.'api/editar-usuario/'.$param['id']                   ?? null,
+            'link_deletar'     => BASE.'api/excluir-usuario/'.$param['id']                  ?? null
         ];
     }
 }

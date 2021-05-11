@@ -1,24 +1,24 @@
 {% extends 'partials/body.twig.php'  %}
 
-{% block title %}Novo Usuário - Mini Framework{% endblock %}
+{% block title %}Novo Usuário - NEXT{% endblock %}
 
 {% block body %}
-<div class="max-width center-screen bg-white padding mt-5">
+<div class="col-md-10 center-screen bg-white padding mt-5">
     <h1>Editar Usuário</h1>
 
     <hr>
 
-    <form action="{{BASE}}update-user/{{user.id}}" method="post">
+    <form action="{{BASE}}update-usuario/{{usuario.id}}" method="post">
 
         <div class="mt-3">
             <label for="txtNome">Nome do usuário</label>
-            <input type="hidden" id="id" name="id" value="{{user.id}}"/>
-            <input type="text" id="txtNome" name="txtNome" class="form-control" placeholder="{{user.name}}" required>
+            <input type="hidden" id="id" name="id" value="{{usuario.id}}"/>
+            <input type="text" id="txtNome" name="txtNome" class="form-control" placeholder="{{usuario.name}}" required>
         </div>
 
         <div class="mt-3">
             <label for="txtEmail">email</label>
-            <input type="text" id="txtEmail" name="txtEmail" class="form-control" placeholder="{{user.email}}" required>
+            <input type="text" id="txtEmail" name="txtEmail" class="form-control" placeholder="{{usuario.email}}" required>
         </div>
 
         <div class="mt-3">
@@ -27,7 +27,7 @@
         </div>
 
         <div class="mt-3 text-right">
-            <a href="{{BASE}}user/" class="btn btn-info btn-sm">Voltar</a>
+            <a href="{{BASE}}usuario/" class="btn btn-info btn-sm">Voltar</a>
             <button type="submit" class="btn btn-success btn-sm">Enviar</button>
         </div>
 

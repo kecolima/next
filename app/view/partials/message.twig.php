@@ -1,9 +1,9 @@
 {% extends 'partials/body.twig.php'  %}
 
-{% block title %}{{titulo}} - Mini Framework{% endblock %}
+{% block title %}{{titulo}} - NEXT{% endblock %}
 
 {% block body %}
-<div class="max-width center-screen bg-white padding mt-5">
+<div class="col-md-10 center-screen bg-white padding mt-5">
     
     <h1>{{titulo}}</h1>
 

@@ -1,10 +1,10 @@
 {% extends 'partials/body.twig.php'  %}
 
-{% block title %}User - Mini Framework{% endblock %}
+{% block title %}Empresa - NEXT{% endblock %}
 
 {% block body %}
 
-<div class="max-width center-screen bg-white padding">
+<div class="col-md-10 center-screen bg-white padding mt-5">
     <h1>Empresa</h1>
     <hr>
     <div>
@@ -31,7 +31,7 @@
                     <tr>
                         <td>{{ empresa.id }}</td>
                         <td>{{ empresa.nome }}</td>  
-                        <td>{{ empresa.id_user}}</td>  
+                        <td>{{ empresa.id_usuario}}</td>  
                         <td><a href={{ empresa.link_editar}} style="color:#0000FF";>editar</a></td>
                         <td><a href={{ empresa.link_deletar}} style="color:#FF0000";>excluir</a></td>               
                     </tr>

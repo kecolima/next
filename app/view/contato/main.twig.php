@@ -1,9 +1,9 @@
 {% extends 'partials/body.twig.php'  %}
 
-{% block title %}Novo User - Mini Framework{% endblock %}
+{% block title %}Novo Usuario - NEXT{% endblock %}
 
 {% block body %}
-<div class="max-width center-screen bg-white padding mt-5">
+<div class="col-md-10 center-screen bg-white padding mt-5">
     <h1>ALex Sampaio Lima</h1>
 
     <hr>

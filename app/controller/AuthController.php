@@ -3,14 +3,14 @@
 namespace app\controller;
 
 use app\core\Controller;
-use app\model\UserModel;
+use app\model\UsuarioModelAPI;
 use app\classes\Input;
 
 class AuthController extends Controller
 {
 
     //Instância da classe EmpresaModel
-    private $userModel;
+    private $usuarioModel;
 
     /**
      * Método construtor
@@ -19,7 +19,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->userModel = new userModel();
+        $this->usuarioModel = new usuarioModelAPI();
     }
 
     /**
@@ -33,14 +33,14 @@ class AuthController extends Controller
         $body = file_get_contents('php://input');
         $jsonBody = json_decode($body, true);
         $parametros = $jsonBody; 
-        $user = $this->getInput($parametros); 
+        $usuario = $this->getInput($parametros); 
 
-        $result = $this->userModel->getValidarUser($user);
+        $result = $this->usuarioModel->getValidarUser($usuario);
 
         $host = 'localhost';        
         $email = $parametros['email'];
         $senha = $parametros['senha']; 
-
+        
         if ($result == 1) {
         
             $header = [

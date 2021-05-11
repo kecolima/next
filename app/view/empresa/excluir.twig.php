@@ -1,9 +1,9 @@
 {% extends 'partials/body.twig.php'  %}
 
-{% block title %}Novo Usuário - Mini Framework{% endblock %}
+{% block title %}Excluir Empresa - NEXT{% endblock %}
 
 {% block body %}
-<div class="max-width center-screen bg-white padding mt-5">
+<div class="col-md-10 center-screen bg-white padding mt-5">
     <h5>Confirmar exclusão da  Empresa {{empresa.nome}}</h5>
 
     <hr>

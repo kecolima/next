@@ -3,14 +3,14 @@
 namespace app\controller;
 
 use app\core\Controller;
-use app\model\UserModel;
+use app\model\UsuarioModel;
 use app\classes\Input;
 
-class UserController extends Controller
+class UsuarioController extends Controller
 {
 
     //Instância da classe UserModel
-    private $userModel;
+    private $usuarioModel;
 
     /**
      * Método construtor
@@ -19,7 +19,7 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->userModel = new userModel();
+        $this->usuarioModel = new usuarioModel();
     }
 
     /**
@@ -29,8 +29,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $result = $this->userModel->getAll();          
-        $this->load('user/main', array('users' => $result)); 
+        $result = $this->usuarioModel->getAll();            
+        $this->load('usuario/main', array('usuarios' => $result)); 
     }
 
     /**
@@ -40,7 +40,7 @@ class UserController extends Controller
      */
     public function novo()
     {
-        $this->load('user/novo');
+        $this->load('usuario/novo');
     }
 
     /**
@@ -52,40 +52,40 @@ class UserController extends Controller
     {    
         $uri = $_SERVER['REQUEST_URI'];        
         $uri = explode('/',$uri);
-        $user_id = end($uri);    
-        $result = $this->userModel->getById($user_id); 
-        $this->load('user/editar', array('user' => $result));
+        $usuario_id = end($uri);    
+        $result = $this->usuarioModel->getById($usuario_id); 
+        $this->load('usuario/editar', array('usuario' => $result));
     }
 
     public function insert()
     {
-        $user = $this->getInput();
+        $usuario = $this->getInput();
         /*
-        if (!$this->validate($user, false)) {
+        if (!$this->validate($usuario, false)) {
             return  $this->showMessage(
                 'Formulário inválido', 
                 'Os dados fornecidos são inválidos',
-                BASE  . 'novo-user/',
+                BASE  . 'novo-usuario/',
                 422
             );
         }
         */
         
-        $result_user = $this->userModel->getValidarUser($user);       
+        $result_usuario = $this->usuarioModel->getValidarUser($usuario);       
 
-        if ($result_user <= 0) {
+        if ($result_usuario <= 0) {
             echo 'Usuário já cadastrado';
             die();
         }
 
-        $result = $this->userModel->insert($user);
+        $result = $this->usuarioModel->insert($usuario);
 
         if ($result <= 0) {
             echo 'Erro ao cadastrar um novo Usuário';
             die();
         }
         
-        redirect(BASE . 'editar-user/' . $result);
+        redirect(BASE . 'editar-usuario/' . $result);
     }
 
     /**
@@ -96,7 +96,7 @@ class UserController extends Controller
     public function pesquisar()
     {
         $param = Input::post('pes');
-        $this->load('user/novo', [
+        $this->load('usuario/novo', [
             'termo' => $param
         ]);
     }
@@ -108,7 +108,7 @@ class UserController extends Controller
      */
     public function update()
     {
-        $user = $this->getInput(); 
+        $usuario = $this->getInput(); 
         $id = Input::post('id');   
         /*
         if (!$this->validate($empresa, false)) {
@@ -120,14 +120,14 @@ class UserController extends Controller
             );
         }
         */
-        $result = $this->userModel->update($user,$id);
+        $result = $this->usuarioModel->update($usuario,$id);
 
         if ($result <= 0) {
             echo 'Erro ao cadastrar um novo empresa';
             die();
         }
 
-        redirect(BASE . 'editar-user/' . $id);      
+        redirect(BASE . 'editar-usuario/' . $id);      
     }
 
     /**
@@ -141,8 +141,7 @@ class UserController extends Controller
         return (object)[
             'id'        => Input::get('id', FILTER_SANITIZE_NUMBER_INT),
             'nome'      => Input::post('txtNome'),
-            'email'     => Input::post('txtEmail'),
-            'senha'     => Input::post('txtSenha')
+            'email'     => Input::post('txtEmail')
         ];
     }
 
@@ -155,16 +154,16 @@ class UserController extends Controller
     {
         $uri = $_SERVER['REQUEST_URI'];        
         $uri = explode('/',$uri);
-        $user = end($uri); 
+        $usuario = end($uri); 
 
-        $result = $this->userModel->delete($user);        
+        $result = $this->usuarioModel->delete($usuario);        
        
         if ($result <= 0) {
             echo 'Erro ao deletar uma novo usuaario';
             die();
         }
 
-        redirect(BASE . 'user'); 
+        redirect(BASE . 'usuario'); 
     }
 
     /**
@@ -176,9 +175,9 @@ class UserController extends Controller
     {    
         $uri = $_SERVER['REQUEST_URI'];        
         $uri = explode('/',$uri);
-        $user_id = end($uri);    
-        $result = $this->userModel->getById($user_id); 
-        $this->load('user/excluir', array('user' => $result));
+        $usuario_id = end($uri);    
+        $result = $this->usuarioModel->getById($usuario_id); 
+        $this->load('usuario/excluir', array('usuario' => $result));
     }
 
     /**
@@ -203,29 +202,29 @@ class UserController extends Controller
     public function buscar()
     {        
         $param = $_GET['pes'];        
-        $result = $this->userModel->getUser($param);
-        $this->load('user/main', array('users' => $result)); 
+        $result = $this->usuarioModel->getUser($param);
+        $this->load('usuario/main', array('usuarios' => $result)); 
     }
 
     /**
      * Valida se os campos recebidos estão válidos
      *
-     * @param  Object $user
+     * @param  Object $usuario
      * @param  bool $validateId
      * @return bool
      */
-    private function validate(Object $user, bool $validateId = true)
+    private function validate(Object $usuario, bool $validateId = true)
     {
-        if ($validateId && $user->id <= 0)
+        if ($validateId && $usuario->id <= 0)
             return false;
 
-        if (strlen($user->nome) < 3)
+        if (strlen($usuario->nome) < 3)
             return false;
 
-        if (strlen($user->email) < 5)
+        if (strlen($usuario->email) < 5)
             return false;
 
-        if (strlen($user->senha) < 6)
+        if (strlen($usuario->senha) < 6)
             return false;
 
         return true;

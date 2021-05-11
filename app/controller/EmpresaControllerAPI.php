@@ -172,9 +172,9 @@ class EmpresaControllerAPI extends Controller
     private function getInput($param)
     {
         return (object)[
-            'id'        => $param['id'],
-            'id_user'   => $param['id_user'],
-            'nome'      => $param['nome']
+            'id'          => $param['id'],
+            'id_usuario'  => $param['id_usuario'],
+            'nome'        => $param['nome']
         ];
     }
 

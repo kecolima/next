@@ -1,9 +1,9 @@
 {% extends 'partials/body.twig.php'  %}
 
-{% block title %}Página não encontrada - Mini Framework{% endblock %}
+{% block title %}Página não encontrada - NEXT{% endblock %}
 
 {% block body %}
-<div class="max-width center-screen bg-white padding">
+<div class="col-md-10 center-screen bg-white padding mt-5">
     <div class="card border-danger mb-3">
         <div class="card-header">{{title}}</div>
         <div class="card-body">

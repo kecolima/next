@@ -1,12 +1,12 @@
 {% extends 'partials/body.twig.php'  %}
 
-{% block title %}Usuário - Mini Framework{% endblock %}
+{% block title %}Empresa - NEXT{% endblock %}
 
 {% block body %}
-<div class="max-width center-screen bg-white padding">
-    <h1>{{user}} - empresas</h1>
+<div class="col-md-10 center-screen bg-white padding mt-5">
+    <h1>{{usuario}} - empresas</h1>
 
-    <a href="{{BASE}}novo-user/" class="btn btn-info btn-sm">Novo usuário</a>
+    <a href="{{BASE}}novo-usuario/" class="btn btn-info btn-sm">Novo usuário</a>
 
     <hr>
     <table class="table table-striped">
@@ -30,7 +30,7 @@
         
     </table>
     <div class="mt-3 text-right">
-        <a href="{{BASE}}user/" class="btn btn-info btn-sm">Voltar</a>
+        <a href="{{BASE}}usuario/" class="btn btn-info btn-sm">Voltar</a>
     </div>
     <hr>
     <p>@KecoLima 2021</p>

@@ -5,9 +5,9 @@ namespace app\model;
 use app\core\Model;
 
 /**
- * Classe responsável por gerenciar a conexão com a tabela user.
+ * Classe responsável por gerenciar a conexão com a tabela usuario.
  */
-class UserModel
+class UsuarioModel
 {
 
     //Instância da classe model
@@ -31,12 +31,11 @@ class UserModel
      */
     public function insert(object $params)
     {   
-        $sql = 'INSERT INTO user (name, email, password) VALUES (:name, :email, :password)';
+        $sql = 'INSERT INTO usuario (nome, email) VALUES (:nome, :email)';
 
         $params = [
-            ':name'      => $params->name,
-            ':email'     => $params->email,
-            ':password'     => $params->password
+            ':nome'      => $params->nome,
+            ':email'     => $params->email
         ];
 
         if (!$this->pdo->executeNonQuery($sql, $params))
@@ -53,13 +52,12 @@ class UserModel
      */
     public function update(object $params, $id)
     {
-        $sql = 'UPDATE user SET name = :nome, email = :email, password = :senha, data = :data WHERE id = :id';
+        $sql = 'UPDATE usuario SET nome = :nome, email = :email, data = :data WHERE id = :id';
 
         $params = [
             ':id'        => $id,
             ':nome'      => $params->nome,
             ':email'     => $params->email,
-            ':senha'     => $params->senha,
             ':data'     => null,
         ];
 
@@ -74,7 +72,7 @@ class UserModel
     public function getAll()
     {
         //Excrevemos a consulta SQL e atribuimos a váriavel $sql
-        $sql = 'SELECT id, name, email, password, data FROM user ORDER BY name ASC';
+        $sql = 'SELECT id, nome, email, data FROM usuario ORDER BY nome ASC';
 
         //Executamos a consulta chamando o método da modelo. Atribuimos o resultado a variável $dr
         $dt = $this->pdo->executeQuery($sql);
@@ -99,7 +97,7 @@ class UserModel
      */
     public function getById(int $id)
     {
-        $sql = 'SELECT id, name, email, password, data FROM user WHERE id = :id';
+        $sql = 'SELECT id, nome, email, data FROM usuario WHERE id = :id';
 
         $param = [
             ':id' => $id
@@ -118,7 +116,7 @@ class UserModel
      */
     public function getUser(string $param)
     {        
-        $sql = 'SELECT * FROM user WHERE name = :valor';
+        $sql = 'SELECT * FROM usuario WHERE nome = :valor';
         //Executamos a consulta chamando o método da modelo. Atribuimos o resultado a variável $dr
 
         $param = [
@@ -149,7 +147,7 @@ class UserModel
      */
     public function delete(int $id)
     {
-        $sql = 'DELETE FROM user WHERE id = :id';
+        $sql = 'DELETE FROM usuario WHERE id = :id';
 
         $param = [
             ':id' => $id
@@ -157,9 +155,9 @@ class UserModel
         
         $dr = $this->pdo->executeQuery($sql, $param);   
         
-        $sql = 'UPDATE empresa SET id_user = :id WHERE id_user = :id_user';      
+        $sql = 'UPDATE empresa SET id_usuario = :id WHERE id_usuario = :id_usuario';      
         $params = [
-            ':id_user' => $id,
+            ':id_usuario' => $id,
             ':id'      => '0'
         ];
 
@@ -176,7 +174,7 @@ class UserModel
      */
     public function getValidarUser(object $params)
     {   
-        $sql = 'SELECT * FROM user WHERE email = :email AND password = :senha';
+        $sql = 'SELECT * FROM administrador WHERE email = :email AND senha = :senha';
         //Executamos a consulta chamando o método da modelo. Atribuimos o resultado a variável $dr
 
         $param = [
@@ -185,9 +183,9 @@ class UserModel
         ];
 
         $dt = $this->pdo->executeQuery($sql, $param);     
-       
+        
         if ($dt) {
-            return 1; 
+            return $dt; 
         }           
 
         return -1; //Código de erro
@@ -203,12 +201,11 @@ class UserModel
     {        
         return (object)[
             'id'               => $param['id']                                          ?? null,
-            'name'             => $param['name']                                        ?? null,
+            'nome'             => $param['nome']                                        ?? null,
             'email'            => $param['email']                                       ?? null,
-            'password'         => $param['password']                                    ?? null,
-            'link_empresa'     => BASE.'ver-empresa/'.$param['id'].'/'.$param['name']   ?? null,
-            'link_editar'      => BASE.'editar-user/'.$param['id']                      ?? null,
-            'link_deletar'     => BASE.'excluir-user/'.$param['id']                      ?? null
+            'link_empresa'     => BASE.'ver-empresa/'.$param['id'].'/'.$param['nome']   ?? null,
+            'link_editar'      => BASE.'editar-usuario/'.$param['id']                      ?? null,
+            'link_deletar'     => BASE.'excluir-usuario/'.$param['id']                     ?? null
         ];
     }
 }

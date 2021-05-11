@@ -3,13 +3,13 @@
 namespace app\controller;
 
 use app\core\Controller;
-use app\model\UserModelAPI;
+use app\model\UsuarioModelAPI;
 use app\classes\Input;
 
-class UserControllerAPI extends Controller
+class UsuarioControllerAPI extends Controller
 {
     //Instância da classe UserModel
-    private $userModel;
+    private $usuarioModel;
 
     /**
      * Método construtor
@@ -18,7 +18,7 @@ class UserControllerAPI extends Controller
      */
     public function __construct()
     {
-        $this->userModel = new userModelAPI();
+        $this->usuarioModel = new usuarioModelAPI();
     }
 
     /**
@@ -58,7 +58,7 @@ class UserControllerAPI extends Controller
         $jwt = $this->validarJWT();
 
         if ($jwt) {
-            $result = $this->userModel->getAll();
+            $result = $this->usuarioModel->getAll();
             echo json_encode($result);
         } else {
             echo json_encode('erro');
@@ -77,8 +77,8 @@ class UserControllerAPI extends Controller
         if($jwt){      
             $uri = $_SERVER['REQUEST_URI'];        
             $uri = explode('/',$uri);
-            $user = end($uri); 
-            $result = $this->userModel->getById($user);
+            $usuario = end($uri); 
+            $result = $this->usuarioModel->getById($usuario);
             echo json_encode($result);
             die();
         }else {
@@ -100,11 +100,11 @@ class UserControllerAPI extends Controller
             $body = file_get_contents('php://input');
             $jsonBody = json_decode($body, true);
             $parametros = $jsonBody;
-            $user = $this->getInput($parametros);
+            $usuario = $this->getInput($parametros);
     
-            $result = $this->userModel->insert($user);
+            $result = $this->usuarioModel->insert($usuario);
             if ($result <= 0) {
-                echo json_encode('Erro ao cadastrar um novo user');
+                echo json_encode('Erro ao cadastrar um novo usuario');
                 die();
             } else {
                 echo json_encode('sucess');
@@ -128,8 +128,8 @@ class UserControllerAPI extends Controller
             $body = file_get_contents('php://input');
             $jsonBody = json_decode($body, true);
             $parametros = $jsonBody; 
-            $user = $this->getInput($parametros);                   
-            $result = $this->userModel->update($user);            
+            $usuario = $this->getInput($parametros);                   
+            $result = $this->usuarioModel->update($usuario);            
             if ($result <= 0) {
                 echo json_encode('erro');
                 die();
@@ -152,8 +152,8 @@ class UserControllerAPI extends Controller
         if($jwt){      
             $uri = $_SERVER['REQUEST_URI'];        
             $uri = explode('/',$uri);
-            $user = end($uri); 
-            $result = $this->userModel->delete($user); 
+            $usuario = end($uri); 
+            $result = $this->usuarioModel->delete($usuario); 
             
             if ($result->id != '') {
                 echo json_encode('erro');
@@ -176,7 +176,6 @@ class UserControllerAPI extends Controller
         return (object)[
             'id'        => $param['id'],
             'email'     => $param['email'],
-            'senha'     => $param['senha'],
             'nome'      => $param['nome'],
         ];
     }
@@ -184,22 +183,22 @@ class UserControllerAPI extends Controller
     /**
      * Valida se os campos recebidos estão válidos
      *
-     * @param  Object $user
+     * @param  Object $usuario
      * @param  bool $validateId
      * @return bool
      */
-    private function validate(Object $user, bool $validateId = true)
+    private function validate(Object $usuario, bool $validateId = true)
     {
-        if ($validateId && $user->id <= 0)
+        if ($validateId && $usuario->id <= 0)
             return false;
 
-        if (strlen($user->nome) < 3)
+        if (strlen($usuario->nome) < 3)
             return false;
 
-        if (strlen($user->email) < 5)
+        if (strlen($usuario->email) < 5)
             return false;
 
-        if (strlen($user->senha) < 6)
+        if (strlen($usuario->senha) < 6)
             return false;
 
         return true;

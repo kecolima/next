@@ -3,13 +3,13 @@
 namespace app\controller;
 
 use app\core\Controller;
-use app\model\UserModel;
+use app\model\UsuarioModel;
 use app\classes\Input;
 
 class LoginController extends Controller
 {
     //Instância da classe EmpresaModel
-    private $userModel;
+    private $usuarioModel;
 
     /**
      * Método construtor
@@ -18,7 +18,7 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->userModel = new userModel();
+        $this->usuarioModel = new usuarioModel();
     }
 
     /**
@@ -38,17 +38,29 @@ class LoginController extends Controller
      */
     public function login()
     {
-        $user = $this->getInput();
-        $result_user = $this->userModel->getValidarUser($user);
-
-        if ($result_user <= 0) {
+        $usuario = $this->getInput();
+        $result_usuario = $this->usuarioModel->getValidarUser($usuario);
+        //dd($result_usuario[0]['id']);
+        if ($result_usuario <= 0) {
             echo 'Usuário não cadastrado';
+            redirect(BASE);
             die();
-        } 
-        
+        }  else {
+            $_SESSION = $result_usuario[0];            
+            redirect(BASE . 'home');
+        }   
+    }
+
+    /**
+     * Método responsável pelo logout do sistema
+     *
+     * @return String
+     */
+    public function logout()
+    {     
+        session_destroy();           
         redirect(BASE);
-        //echo $result;
-        
+        die();       
     }
 
     /**
