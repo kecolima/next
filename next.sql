@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 11-Maio-2021 às 06:18
+-- Tempo de geração: 11-Maio-2021 às 22:37
 -- Versão do servidor: 10.4.13-MariaDB
 -- versão do PHP: 7.4.8
 
@@ -24,25 +24,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `administrador`
---
-
-CREATE TABLE `administrador` (
-  `id` int(15) NOT NULL,
-  `email` varchar(50) NOT NULL,
-  `senha` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Extraindo dados da tabela `administrador`
---
-
-INSERT INTO `administrador` (`id`, `email`, `senha`) VALUES
-(1, 'admin@admin.com', 'admin');
-
--- --------------------------------------------------------
-
---
 -- Estrutura da tabela `empresa`
 --
 
@@ -51,6 +32,13 @@ CREATE TABLE `empresa` (
   `nome` varchar(125) NOT NULL,
   `id_usuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `empresa`
+--
+
+INSERT INTO `empresa` (`id`, `nome`, `id_usuario`) VALUES
+(1, 'Next', 1);
 
 -- --------------------------------------------------------
 
@@ -62,18 +50,20 @@ CREATE TABLE `usuario` (
   `id` int(11) NOT NULL,
   `email` varchar(50) NOT NULL,
   `nome` varchar(50) NOT NULL,
+  `senha` varchar(10) NOT NULL,
   `data` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Índices para tabelas despejadas
+-- Extraindo dados da tabela `usuario`
 --
 
+INSERT INTO `usuario` (`id`, `email`, `nome`, `senha`, `data`) VALUES
+(1, 'admin@admin.com', 'ALEX LIMA', 'admin', '2021-05-11');
+
 --
--- Índices para tabela `administrador`
+-- Índices para tabelas despejadas
 --
-ALTER TABLE `administrador`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Índices para tabela `empresa`
@@ -92,22 +82,16 @@ ALTER TABLE `usuario`
 --
 
 --
--- AUTO_INCREMENT de tabela `administrador`
---
-ALTER TABLE `administrador`
-  MODIFY `id` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
 -- AUTO_INCREMENT de tabela `empresa`
 --
 ALTER TABLE `empresa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de tabela `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
